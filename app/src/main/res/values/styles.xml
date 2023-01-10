@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Custom.ThemeOverlay.App.MaterialAlertDialog.Default" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="alertDialogStyle">@style/Custom.AlertDialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Custom.AlertDialog.Button.Default</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Custom.AlertDialog.Button</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/DataBinding.AlertDialog.Body</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/DataBinding.AlertDialog.Body</item>
+        <item name="dialogCornerRadius">16dp</item>
+        <item name="android:background">@color/blue</item>
+
+    </style>
+    <style name="DataBinding.AlertDialog.Body" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="Custom.AlertDialog.Button.Default" parent="ShapeAppearanceOverlay.Material3.Button">
+        <item name="android:backgroundTint">#DC143C</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+    </style>
+    <style name="Custom.AlertDialog.Button" parent="ShapeAppearanceOverlay.Material3.Button">
+        <item name="android:backgroundTint">#40B5AD</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+    </style>
+    <style name="Custom.AlertDialog" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="shapeAppearance">@style/Custom.ShapeAppearance.App.MediumComponent</item>
+
+    </style>
+
+    <style name="Custom.ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+    <item name="cornerSize">6dp</item>
+    </style>
+</resources>
