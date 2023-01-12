@@ -9,7 +9,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
-import com.phuayanhan.wordpad.Model.Word
+import com.phuayanhan.wordpad.data.Model.Word
 import com.phuayanhan.wordpad.MyApplication
 import com.phuayanhan.wordpad.R
 import com.phuayanhan.wordpad.databinding.FragmentUpdateWordBinding
@@ -51,7 +51,7 @@ class UpdateWordFragment : Fragment() {
             val synonym = binding.etSynonym.text.toString()
             val details = binding.etDetails.text.toString()
 
-            val word = Word(id, title, meaning, synonym, details,true,1)
+            val word = Word(id, title, meaning, synonym, details,false,1)
             viewModel.updateWord(id, word)
             val bundle = Bundle()
             bundle.putBoolean("refresh", true)

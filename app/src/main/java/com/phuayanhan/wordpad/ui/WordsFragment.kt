@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.phuayanhan.wordpad.MainActivity
+import com.phuayanhan.wordpad.MyApplication
 import com.phuayanhan.wordpad.R
 import com.phuayanhan.wordpad.adapters.WordAdapter
 import com.phuayanhan.wordpad.databinding.FragmentWordsBinding
@@ -19,7 +20,7 @@ class WordsFragment : Fragment() {
     private lateinit var adapter: WordAdapter
     private lateinit var binding: FragmentWordsBinding
     private val viewModel: WordsViewModel by viewModels {
-        WordsViewModel.Provider((requireActivity() as MainActivity).wordRepo)
+        WordsViewModel.Provider((requireActivity().application as MyApplication).wordRepo)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

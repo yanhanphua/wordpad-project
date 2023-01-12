@@ -11,7 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import com.phuayanhan.wordpad.MainActivity
-import com.phuayanhan.wordpad.Model.Word
+import com.phuayanhan.wordpad.MyApplication
+import com.phuayanhan.wordpad.data.Model.Word
 import com.phuayanhan.wordpad.databinding.FragmentAddWordBinding
 import com.phuayanhan.wordpad.viewModels.AddWordViewModel
 import java.text.SimpleDateFormat
@@ -21,7 +22,7 @@ import java.util.*
 class AddWordFragment : Fragment() {
     private lateinit var binding: FragmentAddWordBinding
     private val viewModel: AddWordViewModel by viewModels {
-        AddWordViewModel.Provider((requireActivity() as MainActivity).wordRepo)
+        AddWordViewModel.Provider((requireActivity().application as MyApplication).wordRepo)
     }
 
     override fun onCreateView(

@@ -15,6 +15,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.phuayanhan.wordpad.MainActivity
+import com.phuayanhan.wordpad.MyApplication
 import com.phuayanhan.wordpad.R
 import com.phuayanhan.wordpad.adapters.ViewPagerAdapter
 import com.phuayanhan.wordpad.databinding.FragmentMainBinding
@@ -25,7 +26,7 @@ class MainFragment : Fragment() {
     private val wordsFragment = WordsFragment.getInstance()
     private val completedWordsFragment = CompletedWordsFragment.getInstance()
     private val viewModel: WordsViewModel by viewModels {
-        WordsViewModel.Provider((requireActivity() as MainActivity).wordRepo)
+        WordsViewModel.Provider((requireActivity().application as MyApplication).wordRepo)
     }
 
     override fun onCreateView(

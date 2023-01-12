@@ -1,8 +1,18 @@
 package com.phuayanhan.wordpad
 
 import android.app.Application
+import androidx.room.Room
+import com.phuayanhan.wordpad.data.WordpadDatabase
 import com.phuayanhan.wordpad.repository.WordRepository
+import com.phuayanhan.wordpad.repository.WordRepositoryFake
 
 class MyApplication : Application() {
-    val wordRepo = WordRepository.getInstance()
+    val wordRepoFake = WordRepositoryFake.getInstance()
+
+    lateinit var wordRepo:WordRepository
+    override fun onCreate() {
+        super.onCreate()
+        val wordpadDatabase = Room.databaseBuilder(this,WordpadDatabase::class.java,WordpadDatabase.DATABASE_NAME).fallbackToDestructiveMigration().build()
+        wordRepo= WordRepository(wordpadDatabase.wordDao)
+    }
 }

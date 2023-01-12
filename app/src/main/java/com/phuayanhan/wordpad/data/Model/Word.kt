@@ -1,8 +1,12 @@
-package com.phuayanhan.wordpad.Model
+package com.phuayanhan.wordpad.data.Model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.Date
 
+@Entity
 data class Word(
+    @PrimaryKey
     val id: Long? = null,
     val title: String,
     val meaning: String,
