@@ -43,6 +43,8 @@ class MainFragment : Fragment() {
             childFragmentManager,
             lifecycle
         )
+
+        // this is to search for words
         binding.btnSearch.setOnClickListener {
             val search = binding.etSearch.text.toString()
             wordsFragment.refresh(search)
@@ -66,6 +68,7 @@ class MainFragment : Fragment() {
 //            }
 //
 //        })
+        // this is to sort the words
         binding.btnSort.setOnClickListener{
             val dialogBinding = layoutInflater.inflate(R.layout.sort_custom_dialog,null)
 
@@ -89,7 +92,7 @@ class MainFragment : Fragment() {
             }
         }
         binding.vpWordPad.adapter = adapter
-
+        // this is to set the tab layout
         TabLayoutMediator(binding.tlWordPad, binding.vpWordPad) { tab, pos ->
             Log.d("eiyo",pos.toString())
             tab.text = when (pos) {
@@ -98,6 +101,7 @@ class MainFragment : Fragment() {
             }
         }.attach()
 
+        // these are the fragment listener
         setFragmentResultListener("from_add_item") { _, result ->
             val refresh = result.getBoolean("refresh")
             if (refresh) {

@@ -21,9 +21,13 @@ import com.phuayanhan.wordpad.viewModels.MainViewModel
 class CompletedWordsFragment : Fragment() {
     private lateinit var adapter: WordAdapter
     private lateinit var binding: FragmentCompletedWordsBinding
+
+    // this is to call the CompletedWordViewModel for this fragment to call functions in the specific viewModel
     private val viewModel: CompletedWordViewModel by viewModels {
         CompletedWordViewModel.Provider((requireContext().applicationContext as MyApplication).wordRepo)
     }
+
+    // this is to allow main fragment to call functions in completed word fragment Note  !! the sort wont work without this
     private val parentViewModel:MainViewModel by viewModels(
         ownerProducer = {requireParentFragment()}
     )
@@ -31,6 +35,7 @@ class CompletedWordsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // this is to connect the layout from the xml to completed word fragment
         binding= FragmentCompletedWordsBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -38,18 +43,23 @@ class CompletedWordsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
 
+        // this is to show the word
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
         }
+        // this is to update and show the word when you sort
         parentViewModel.refreshCompletedWords.asLiveData().observe(viewLifecycleOwner){
             viewModel.sortWords(it.first,it.second)
         }
     }
+
+    // this function is to refresh the page after changing the database
     fun refresh(str:String) {
         viewModel.getWords(str)
 
     }
 
+    // bind the layout and adapter to the fragment
     fun setupAdapter() {
         val layoutManager = LinearLayoutManager(requireContext())
         adapter = WordAdapter(emptyList()) {
@@ -60,6 +70,7 @@ class CompletedWordsFragment : Fragment() {
         binding.rvItems.adapter = adapter
         binding.rvItems.layoutManager = layoutManager
     }
+    // allow the fragment to behave as a singleton
     companion object {
         private var completedWordsFragmentInstance: CompletedWordsFragment? = null
         fun getInstance(): CompletedWordsFragment {

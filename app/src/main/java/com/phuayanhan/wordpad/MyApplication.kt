@@ -9,6 +9,7 @@ import com.phuayanhan.wordpad.repository.WordRepositoryFake
 class MyApplication : Application() {
     val wordRepoFake = WordRepositoryFake.getInstance()
 
+    // this is to declare word repository and connect it to the database
     lateinit var wordRepo:WordRepository
     override fun onCreate() {
         super.onCreate()

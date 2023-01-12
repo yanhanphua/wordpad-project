@@ -24,6 +24,8 @@ import com.phuayanhan.wordpad.viewModels.DetailsViewModel
 class DetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var builder : AlertDialog.Builder
+
+    // this is to allow the fragment to call the specific viewModel
     val viewModel: DetailsViewModel by viewModels {
         DetailsViewModel.Provider((requireContext().applicationContext as MyApplication).wordRepo)
     }
@@ -32,6 +34,8 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        // this is to link the specific xml to the fragment
         binding = FragmentDetailsBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -41,8 +45,10 @@ class DetailsFragment : Fragment() {
 
         val navArgs: DetailsFragmentArgs by navArgs()
 
+        // this is to get the data pass from another fragment
         viewModel.getWordById(navArgs.id)
 
+        // this is to set the values for a specific word
         viewModel.word.observe(viewLifecycleOwner) {
             binding.run {
                 tvTitle.text = it.title
@@ -52,6 +58,7 @@ class DetailsFragment : Fragment() {
             }
         }
 
+        // this is to submit a form to update the status of a word
         binding.btnDone.setOnClickListener {
             viewModel.completedWord(navArgs.id)
             val bundle=Bundle()
@@ -59,13 +66,19 @@ class DetailsFragment : Fragment() {
             setFragmentResult("from-details-done",bundle)
             NavHostFragment.findNavController(this).popBackStack()
         }
+
+        // this is to submit a form to update the word
         binding.btnUpdate.setOnClickListener {
             val action = DetailsFragmentDirections.actionDetailsToUpdateWord(navArgs.id)
             NavHostFragment.findNavController(this).navigate(action)
         }
+
+        // this is to submit a form to delete a word from the local database
         binding.btnDelete.setOnClickListener {
             val bundle=Bundle()
             bundle.putBoolean("refresh",true)
+
+            // this is to create a alert to check if you are certain about this change
             val alertDialog= MaterialAlertDialogBuilder(requireContext(), R.style.Custom_ThemeOverlay_App_MaterialAlertDialog_Default)
                 .setTitle(binding.tvTitle.text).setMessage(binding.tvMeaning.text)
                 .setCancelable(true)

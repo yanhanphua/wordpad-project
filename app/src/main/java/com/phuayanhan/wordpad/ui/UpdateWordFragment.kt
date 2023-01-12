@@ -17,6 +17,7 @@ import com.phuayanhan.wordpad.viewModels.UpdateWordViewModel
 
 class UpdateWordFragment : Fragment() {
     private lateinit var binding: FragmentUpdateWordBinding
+    // this is to allow the fragment to call function form said viewModel
     val viewModel: UpdateWordViewModel by viewModels {
         UpdateWordViewModel.Provider((requireContext().applicationContext as MyApplication).wordRepo)
     }
@@ -32,6 +33,7 @@ class UpdateWordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //this is to get data from another fragment
         val navArgs: UpdateWordFragmentArgs by navArgs()
 
         viewModel.getWordById(navArgs.id)
@@ -44,6 +46,7 @@ class UpdateWordFragment : Fragment() {
             }
         }
 
+        // this is to submit a form for updating a word
         binding.btnAdd.setOnClickListener {
             val id = navArgs.id
             val title = binding.etTitle.text.toString()

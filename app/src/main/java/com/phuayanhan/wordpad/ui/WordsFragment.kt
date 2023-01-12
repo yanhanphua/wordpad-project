@@ -21,9 +21,12 @@ import java.util.Date
 class WordsFragment : Fragment() {
     private lateinit var adapter: WordAdapter
     private lateinit var binding: FragmentWordsBinding
+
+    // this is allow the fragment to access function from said viewModel
     private val viewModel: WordsViewModel by viewModels {
         WordsViewModel.Provider((requireActivity().application as MyApplication).wordRepo)
     }
+    // this is to allow the parent fragment to call function from this fragment
     private val parentViewModel: MainViewModel by viewModels(
         ownerProducer = {requireParentFragment()}
     )
@@ -40,11 +43,13 @@ class WordsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
 
+        // this is to navigate to the add fragment
         binding.efabAddNewItem.setOnClickListener {
             val action = MainFragmentDirections.actionMainToAddWord()
             NavHostFragment.findNavController(this).navigate(action)
         }
 
+        // this is to show current words
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
         }
@@ -53,11 +58,12 @@ class WordsFragment : Fragment() {
         }
     }
 
+    // this is to refresh when the database is changed
     fun refresh(str:String) {
         viewModel.getWords(str)
     }
 
-
+    // bind the layout and adapter to the fragment
     fun setupAdapter() {
         val layoutManager = LinearLayoutManager(requireContext())
         adapter = WordAdapter(emptyList()) {
@@ -68,7 +74,7 @@ class WordsFragment : Fragment() {
         binding.rvItems.adapter = adapter
         binding.rvItems.layoutManager = layoutManager
     }
-
+    // allow the fragment to behave as a singleton
     companion object {
         private var wordsFragmentInstance: WordsFragment? = null
         fun getInstance(): WordsFragment {

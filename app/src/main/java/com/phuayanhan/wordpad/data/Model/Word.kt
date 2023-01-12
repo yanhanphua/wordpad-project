@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity
+//data class of how the data will look like
 data class Word(
     @PrimaryKey
     val id: Long? = null,
