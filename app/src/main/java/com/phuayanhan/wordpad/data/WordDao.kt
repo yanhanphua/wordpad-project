@@ -23,4 +23,7 @@ interface WordDao {
 
     @Query("UPDATE word SET completed = :status WHERE id = :id")
     suspend fun updateStatusById(id: Long, status: Boolean)
+
+    @Query("SELECT * FROM word WHERE title LIKE '%'|| :title ||'%'")
+    suspend fun getWordsBySearch(title: String): List<Word>
 }

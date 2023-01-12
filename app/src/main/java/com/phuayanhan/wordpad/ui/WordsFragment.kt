@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.phuayanhan.wordpad.MainActivity
@@ -13,6 +14,7 @@ import com.phuayanhan.wordpad.MyApplication
 import com.phuayanhan.wordpad.R
 import com.phuayanhan.wordpad.adapters.WordAdapter
 import com.phuayanhan.wordpad.databinding.FragmentWordsBinding
+import com.phuayanhan.wordpad.viewModels.MainViewModel
 import com.phuayanhan.wordpad.viewModels.WordsViewModel
 import java.util.Date
 
@@ -22,6 +24,9 @@ class WordsFragment : Fragment() {
     private val viewModel: WordsViewModel by viewModels {
         WordsViewModel.Provider((requireActivity().application as MyApplication).wordRepo)
     }
+    private val parentViewModel: MainViewModel by viewModels(
+        ownerProducer = {requireParentFragment()}
+    )
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,14 +48,15 @@ class WordsFragment : Fragment() {
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
         }
+        parentViewModel.refreshWords.asLiveData().observe(viewLifecycleOwner){
+            viewModel.sortWords(it.first,it.second)
+        }
     }
 
     fun refresh(str:String) {
         viewModel.getWords(str)
     }
-    fun sortrefresh(order:String,by:String) {
-        viewModel.sortWords(order,by)
-    }
+
 
     fun setupAdapter() {
         val layoutManager = LinearLayoutManager(requireContext())

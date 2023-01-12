@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,13 +16,17 @@ import com.phuayanhan.wordpad.R
 import com.phuayanhan.wordpad.adapters.WordAdapter
 import com.phuayanhan.wordpad.databinding.FragmentCompletedWordsBinding
 import com.phuayanhan.wordpad.viewModels.CompletedWordViewModel
+import com.phuayanhan.wordpad.viewModels.MainViewModel
 
 class CompletedWordsFragment : Fragment() {
     private lateinit var adapter: WordAdapter
     private lateinit var binding: FragmentCompletedWordsBinding
     private val viewModel: CompletedWordViewModel by viewModels {
-        CompletedWordViewModel.Provider((requireActivity().application as MyApplication).wordRepo)
+        CompletedWordViewModel.Provider((requireContext().applicationContext as MyApplication).wordRepo)
     }
+    private val parentViewModel:MainViewModel by viewModels(
+        ownerProducer = {requireParentFragment()}
+    )
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,14 +41,13 @@ class CompletedWordsFragment : Fragment() {
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
         }
-    }
-    fun refresh(str:String) {
-        lifecycleScope.launchWhenResumed {
-            viewModel.getWords(str)
+        parentViewModel.refreshCompletedWords.asLiveData().observe(viewLifecycleOwner){
+            viewModel.sortWords(it.first,it.second)
         }
     }
-    fun sortrefresh(order:String,by:String) {
-        viewModel.sortWords(order,by)
+    fun refresh(str:String) {
+        viewModel.getWords(str)
+
     }
 
     fun setupAdapter() {

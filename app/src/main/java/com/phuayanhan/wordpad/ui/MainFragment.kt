@@ -19,15 +19,14 @@ import com.phuayanhan.wordpad.MyApplication
 import com.phuayanhan.wordpad.R
 import com.phuayanhan.wordpad.adapters.ViewPagerAdapter
 import com.phuayanhan.wordpad.databinding.FragmentMainBinding
+import com.phuayanhan.wordpad.viewModels.MainViewModel
 import com.phuayanhan.wordpad.viewModels.WordsViewModel
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private val wordsFragment = WordsFragment.getInstance()
     private val completedWordsFragment = CompletedWordsFragment.getInstance()
-    private val viewModel: WordsViewModel by viewModels {
-        WordsViewModel.Provider((requireActivity().application as MyApplication).wordRepo)
-    }
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,32 +40,32 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val adapter = ViewPagerAdapter(
             listOf(wordsFragment, completedWordsFragment),
-            requireActivity().supportFragmentManager,
+            childFragmentManager,
             lifecycle
         )
-//        binding.btnSearch.setOnClickListener {
-//            val search = binding.etSearch.text.toString()
-//            wordsFragment.refresh(search)
-//            completedWordsFragment.refresh(search)
-//        }
-        binding.svSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                p0.let {
-                    wordsFragment.refresh(it.toString())
-                    completedWordsFragment.refresh(it.toString())
-
-                    return false
-                }
-            }
-            override fun onQueryTextChange(p0: String?): Boolean {
-                p0.let {
-                    wordsFragment.refresh(it.toString())
-                    completedWordsFragment.refresh(it.toString())
-                    return false
-                }
-            }
-
-        })
+        binding.btnSearch.setOnClickListener {
+            val search = binding.etSearch.text.toString()
+            wordsFragment.refresh(search)
+            completedWordsFragment.refresh(search)
+        }
+//        binding.svSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+//            override fun onQueryTextSubmit(p0: String?): Boolean {
+//                p0.let {
+//                    wordsFragment.refresh(it.toString())
+//                    completedWordsFragment.refresh(it.toString())
+//
+//                    return false
+//                }
+//            }
+//            override fun onQueryTextChange(p0: String?): Boolean {
+//                p0.let {
+//                    wordsFragment.refresh(it.toString())
+//                    completedWordsFragment.refresh(it.toString())
+//                    return false
+//                }
+//            }
+//
+//        })
         binding.btnSort.setOnClickListener{
             val dialogBinding = layoutInflater.inflate(R.layout.sort_custom_dialog,null)
 
@@ -84,8 +83,8 @@ class MainFragment : Fragment() {
                 val radioButtonText1 = radioButton1.text
                 val radioButtonText2 = radioButton2.text
                 Log.d("idkwtfimdoing","$radioButtonText1,$radioButtonText2")
-                wordsFragment.sortrefresh(radioButtonText1.toString(),radioButtonText2.toString())
-                completedWordsFragment.sortrefresh(radioButtonText1.toString(),radioButtonText2.toString())
+                viewModel.onRefreshWords(radioButtonText1.toString(),radioButtonText2.toString())
+                viewModel.onRefreshCompletedWords(radioButtonText1.toString(),radioButtonText2.toString())
                 myDialog.hide()
             }
         }

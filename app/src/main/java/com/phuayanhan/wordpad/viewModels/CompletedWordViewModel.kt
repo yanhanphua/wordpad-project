@@ -20,14 +20,16 @@ class CompletedWordViewModel(val repo: WordRepository): ViewModel() {
 
     fun getWords(str:String) {
         viewModelScope.launch {
-            val res = repo.getWords()
+            val res = repo.getWords(str)
             words.value = res.filter { it.completed }
             Log.d("get words", words.value.toString() + "something")
         }
     }
     fun sortWords(order:String,by:String){
-//        val res=repo.sortWord(order,by)
-//        words.value=res.filter { !it.completed }
+        viewModelScope.launch {
+            val res=repo.sortWord(order,by)
+            words.value=res.filter { !it.completed }
+        }
     }
     class Provider(val repo: WordRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

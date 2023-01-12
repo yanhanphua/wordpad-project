@@ -12,7 +12,9 @@ class MyApplication : Application() {
     lateinit var wordRepo:WordRepository
     override fun onCreate() {
         super.onCreate()
-        val wordpadDatabase = Room.databaseBuilder(this,WordpadDatabase::class.java,WordpadDatabase.DATABASE_NAME).fallbackToDestructiveMigration().build()
+        val wordpadDatabase = Room.databaseBuilder(this,
+            WordpadDatabase::class.java,
+            WordpadDatabase.DATABASE_NAME).fallbackToDestructiveMigration().build()
         wordRepo= WordRepository(wordpadDatabase.wordDao)
     }
 }
